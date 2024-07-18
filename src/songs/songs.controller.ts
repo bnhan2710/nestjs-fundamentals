@@ -1,23 +1,34 @@
-import { Controller, Delete, Get, Post, Put, Param } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Param, Body, HttpException, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { SongsService } from './songs.service';
+import { CreateSongDTO } from './dto/create-song-dto';
+import { error } from 'console';
+import { types } from 'util';
 
 @Controller('songs')
 export class SongsController {
     constructor(private songsService: SongsService) {}
 
     @Post()
-    create() {
-        return this.songsService.create('Dung lam trai tim anh dau by Son Tung');
+    create(@Body() createSongDTO:CreateSongDTO) {
+        return this.songsService.create(createSongDTO);
     }
 
     @Get()
     findAll() {
-        return 'This action returns all songs';
+        try{
+        return this.songsService.findAll()
+        }catch(err){
+            throw new HttpException('Internal server error',
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                {
+                    cause :err
+                }
+            )
+        }
     }
-
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return `Fetch song based on id ${id}`;
+    findOne(@Param('id', new ParseIntPipe({errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE})) id: number) {
+      return `fetch song on based on th id ${typeof(id)}`
     }
 
     @Put(':id')

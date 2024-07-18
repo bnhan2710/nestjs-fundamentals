@@ -2,16 +2,21 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SongsService {
-    //local db array 
-    private readonly songs = [];
-    create(song){
-        //push song to db
-        this.songs.push(song)
-        return this.songs
-    }
+  // local db
+  // local array
 
-    findAll(){
-        
-        return this.songs
-    }
+  private readonly songs = [];
+
+  create(song) {
+    // Save the song in the database
+    this.songs.push(song);
+    return this.songs; 
+  }
+
+  findAll() {
+    // fetch the songs from the db
+    //Error comes while fetching data from DB
+      throw new Error('Error in DB while fetching record');
+    return this.songs;
+  }
 }

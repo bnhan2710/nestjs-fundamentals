@@ -1,6 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 
-@Injectable()
+@Injectable({
+  scope: Scope.TRANSIENT,
+  
+})
 export class SongsService {
   // local db
   // local array
@@ -16,7 +19,7 @@ export class SongsService {
   findAll() {
     // fetch the songs from the db
     //Error comes while fetching data from DB
-      throw new Error('Error in DB while fetching record');
+      // throw new Error('Error in DB while fetching record');
     return this.songs;
   }
 }

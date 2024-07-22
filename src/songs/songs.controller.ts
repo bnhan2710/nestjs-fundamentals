@@ -1,12 +1,19 @@
-import { Controller, Delete, Get, Post, Put, Param, Body, HttpException, HttpStatus, ParseIntPipe } from '@nestjs/common';
-import { SongsService } from './songs.service';
+import { Controller, Delete, Get, Post, Put, Param, Body, HttpException, HttpStatus, ParseIntPipe, Inject, Scope } from '@nestjs/common';
+import { SongsService } from './songs.service'; 
 import { CreateSongDTO } from './dto/create-song-dto';
-import { error } from 'console';
-import { types } from 'util';
+import { Connection } from 'src/common/constants/connection';
+import path from 'path';
 
-@Controller('songs')
+@Controller({path:'songs',scope:Scope.REQUEST}
+)
 export class SongsController {
-    constructor(private songsService: SongsService) {}
+    constructor(
+        private songsService: SongsService,
+        @Inject("CONNECTION")
+        private connection: Connection
+    ) {
+        console.log(`THIS IS CONNECTION STRING: ${this.connection}`)  
+    }
 
     @Post()
     create(@Body() createSongDTO:CreateSongDTO) {
